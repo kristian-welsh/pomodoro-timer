@@ -18,7 +18,7 @@ package com.timer {
 		 */
 		public function DisplayTimerModel(numMins:uint) {
 			super();
-			timer = new Timer(10, numMins * 60);
+			timer = new Timer(1000, numMins * 60);
 			timer.addEventListener(TimerEvent.TIMER, updateViewDisplay);
 			timer.addEventListener(TimerEvent.TIMER_COMPLETE, timerComplete);
 		}

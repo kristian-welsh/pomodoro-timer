@@ -6,8 +6,8 @@
     <movie input="" />
     <movie path="bin\PomodoroTimer.swf" />
     <movie fps="30" />
-    <movie width="800" />
-    <movie height="600" />
+    <movie width="305" />
+    <movie height="220" />
     <movie version="17" />
     <movie minorVersion="0" />
     <movie platform="Flash Player" />

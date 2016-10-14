@@ -11,6 +11,8 @@ package com{
 	import flash.net.URLRequest;
 	
 	public class Main extends Sprite {
+		static public const MARGIN:Number = 15;
+		
 		private var pomodoroModel:DisplayTimerModel;
 		private var breakModel:DisplayTimerModel;
 		private var currentTimer:DisplayTimerModel;
@@ -31,10 +33,14 @@ package com{
 		
 		private function init(e:Event = null):void {
 			removeEventListener(Event.ADDED_TO_STAGE, init);
-			
+			var doc:DisplayObjectContainer = new Sprite();
 			initModels();
-			initViews(stage);
+			initViews(doc);
 			initControllers();
+			
+			doc.x = MARGIN;
+			doc.y = MARGIN;
+			stage.addChild(doc);
 		}
 		
 		private function initModels():void {
@@ -43,14 +49,14 @@ package com{
 		}
 		
 		private function initViews(container:DisplayObjectContainer):void {
-			pomodoroView = new DisplayTimerView(container, 370, 110, 50); // 370 is magic, need alignemnt
-			breakView = new DisplayTimerView(container, 370, 110, 50);
+			pomodoroView = new DisplayTimerView(container, 70, 60, 50); // 370 is magic, need alignemnt
+			breakView = new DisplayTimerView(container, 70, 60, 50);
 			
-			pomodoroButtonView = new ButtonView(container, 300, 50, "pomodoro", Colours.DARK_BLUE, Colours.LIGHT_BLUE);
-			breakButtonView = new ButtonView(container, 500, 50, "break", Colours.DARK_BLUE, Colours.LIGHT_BLUE);
-			startButtonView = new ButtonView(container, 300, 200, "start", Colours.DARK_GREEN, Colours.LIGHT_GREEN);
-			stopButtonView = new ButtonView(container, 400, 200, "stop", Colours.DARK_RED, Colours.LIGHT_RED);
-			resetButtonView = new ButtonView(container, 500, 200, "reset", Colours.DARK_GREY, Colours.LIGHT_GREY);
+			pomodoroButtonView = new ButtonView(container, 0, 0, "pomodoro", Colours.DARK_BLUE, Colours.LIGHT_BLUE);
+			breakButtonView = new ButtonView(container, 200, 0, "break", Colours.DARK_BLUE, Colours.LIGHT_BLUE);
+			startButtonView = new ButtonView(container, 0, 150, "start", Colours.DARK_GREEN, Colours.LIGHT_GREEN);
+			stopButtonView = new ButtonView(container, 100, 150, "stop", Colours.DARK_RED, Colours.LIGHT_RED);
+			resetButtonView = new ButtonView(container, 200, 150, "reset", Colours.DARK_GREY, Colours.LIGHT_GREY);
 			
 			pomodoroModel.addEventListener(DisplayTimerModel.DISPLAY_UPDATE, function(event:GeneralEvent):void {
 				pomodoroView.updateDisplay("" + event.data);
@@ -108,6 +114,7 @@ package com{
 			pomodoroModel.show();
 			breakModel.hide();
 			breakModel.reset();
+			startTimer();
 		}
 		
 		private function breakTimer(e:Event = null):void {
@@ -115,6 +122,7 @@ package com{
 			breakModel.show();
 			pomodoroModel.hide();
 			pomodoroModel.reset();
+			startTimer();
 		}
 	}
 

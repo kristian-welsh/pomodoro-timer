@@ -85,7 +85,7 @@ package com.button {
 		}
 		
 		private function baseRight():Number {
-			return label.x + label.textWidth + PADDING.LEFT + PADDING.RIGHT;
+			return label.x + label.textWidth + PADDING.LEFT + PADDING.RIGHT - 5
 		}
 		
 		private function baseBottom():Number {
