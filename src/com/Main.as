@@ -1,5 +1,7 @@
 package com{
 	import com.button.ButtonView;
+	import com.counter.CounterModel;
+	import com.counter.CounterView;
 	import com.events.GeneralEvent;
 	import com.timer.DisplayTimerModel;
 	import com.timer.DisplayTimerView;
@@ -7,8 +9,10 @@ package com{
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.events.TimerEvent;
 	import flash.media.Sound;
 	import flash.net.URLRequest;
+	import flash.utils.Timer;
 	
 	public class Main extends Sprite {
 		static public const MARGIN:Number = 15;
@@ -25,6 +29,9 @@ package com{
 		private var resetButtonView:ButtonView;
 		private var pomodoroButtonView:ButtonView;
 		private var breakButtonView:ButtonView;
+		
+		private var counterView:CounterView;
+		private var counterModel:CounterModel;
 		
 		public function Main() {
 			if (stage) init();
@@ -46,6 +53,7 @@ package com{
 		private function initModels():void {
 			pomodoroModel = new DisplayTimerModel(25);
 			breakModel = new DisplayTimerModel(5);
+			counterModel = new CounterModel();
 		}
 		
 		private function initViews(container:DisplayObjectContainer):void {
@@ -57,6 +65,8 @@ package com{
 			startButtonView = new ButtonView(container, 0, 150, "start", Colours.DARK_GREEN, Colours.LIGHT_GREEN);
 			stopButtonView = new ButtonView(container, 100, 150, "stop", Colours.DARK_RED, Colours.LIGHT_RED);
 			resetButtonView = new ButtonView(container, 200, 150, "reset", Colours.DARK_GREY, Colours.LIGHT_GREY);
+			
+			counterView = new CounterView(container, 150, 5, 20);
 			
 			pomodoroModel.addEventListener(DisplayTimerModel.DISPLAY_UPDATE, function(event:GeneralEvent):void {
 				pomodoroView.updateDisplay("" + event.data);
@@ -76,8 +86,16 @@ package com{
 			breakModel.addEventListener(DisplayTimerModel.HIDE, function(event:GeneralEvent = null):void {
 				breakView.hide();
 			});
-			pomodoroModel.addEventListener(DisplayTimerModel.TIMER_COMPLETE, playBeep);
+			
+			pomodoroModel.addEventListener(DisplayTimerModel.TIMER_COMPLETE, function(event:GeneralEvent = null):void {
+				playBeep();
+				counterModel.increment();
+			});
 			breakModel.addEventListener(DisplayTimerModel.TIMER_COMPLETE, playBeep);
+			
+			counterModel.addEventListener(CounterModel.COUNTER_UPDATE, function(event:GeneralEvent = null):void {
+				counterView.setValue(event.data as int);
+			});
 			
 			pomadoroTimer();
 		}
