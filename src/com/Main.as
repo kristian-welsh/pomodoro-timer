@@ -7,6 +7,7 @@ package com{
 	import com.timer.DisplayTimerView;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
+	import flash.errors.IOError;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
@@ -98,12 +99,21 @@ package com{
 			});
 			
 			pomadoroTimer();
+			
+			playBeep();
 		}
 		
 		private function playBeep(e:Event = null):void {
-			var request:URLRequest = new URLRequest("../assets/alarm.mp3");
+			var request:URLRequest
 			var sound:Sound = new Sound();
-			sound.load(request);
+			try {
+				request = new URLRequest("../assets/alarm.mp3"); // dev environment file location
+				sound.load(request);
+			} catch (e:IOError) {
+				// TODO: doesn't work yet for some reason, throws stream error
+				request = new URLRequest("./alarm.mp3"); // deployment environment file location
+				sound.load(request);
+			}
 			sound.play();
 		}
 		
