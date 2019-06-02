@@ -100,7 +100,7 @@ package com{
 			
 			pomadoroTimer();
 			
-			playBeep();
+			//playBeep();
 		}
 		
 		private function playBeep(e:Event = null):void {
